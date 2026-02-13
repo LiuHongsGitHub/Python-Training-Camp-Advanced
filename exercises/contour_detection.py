@@ -36,6 +36,7 @@ def contour_detection(image_path):
     try:
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         ret, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+        # 返回的是tuple
         contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         img_copy = img.copy()
         if not isinstance(contours, list):
@@ -46,6 +47,4 @@ def contour_detection(image_path):
         print(e)
         return None, None   
      
-    return img_copy, contours
-# 测试  
-    return img_copy, contours        
+    return img_copy, contours       
