@@ -22,8 +22,9 @@ def maxpool(x, kernel_size, stride):
         np.array: 最大池化结果，形状 (out_H, out_W)。
                   out_H = (H - kernel_size) // stride + 1
                   out_W = (W - kernel_size) // stride + 1
-    """
+    """ 
     # 请在此处编写代码
+    
     # 提示：
     # 1. 计算输出的高度和宽度。
     # 2. 初始化输出数组。
@@ -33,3 +34,12 @@ def maxpool(x, kernel_size, stride):
     # 6. 找到窗口中的最大值 np.max(window)。
     # 7. 将最大值存入输出数组 out[i, j]。
     pass 
+    x_shape = np.shape(x)
+    out_H = (x_shape[0]-kernel_size)//stride+1
+    out_W = (x_shape[1]-kernel_size)//stride+1
+    out = np.zeros((out_H, out_W))
+    for i in range(out_H):
+        for j in range(out_W):
+            max_val = x[stride*i:stride*i+kernel_size,stride*j:stride*j+kernel_size]
+            out[i,j] = np.max(max_val)
+    return out

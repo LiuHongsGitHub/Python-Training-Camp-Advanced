@@ -39,3 +39,26 @@ def calculate_iou(box1, box2):
     # 7. 计算 IoU = intersection_area / union_area。
     #    注意处理 union_area 为 0 的情况 (除零错误)。
     pass 
+    box1 = np.array(box1)
+    box2 = np.array(box2)
+    
+    # Calculate the coordinates of the intersection rectangle
+    intersection_xmin = max(box1[0], box2[0])
+    intersection_ymin = max(box1[1], box2[1])
+    intersection_xmax = min(box1[2], box2[2])
+    intersection_ymax = min(box1[3], box2[3])
+    
+    # Calculate the area of the intersection rectangle
+    intersection_area = max(0, intersection_xmax - intersection_xmin) * max(0, intersection_ymax - intersection_ymin)
+    
+    # Calculate the area of both bounding boxes
+    box1_area = (box1[2] - box1[0]) * (box1[3] - box1[1])
+    box2_area = (box2[2] - box2[0]) * (box2[3] - box2[1])
+    
+    # Calculate the union area
+    union_area = box1_area + box2_area - intersection_area
+    
+    # Calculate the IoU
+    iou = intersection_area / union_area
+    
+    return iou

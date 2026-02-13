@@ -28,3 +28,13 @@ def image_processing_pipeline(image_path):
     # 5. 使用 cv2.Canny() 进行边缘检测。
     # 6. 使用 try...except 包裹代码以处理可能的异常。
     pass 
+    img =cv2.imread(image_path)
+    if img is None:
+        return None
+    try:
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        blur = cv2.GaussianBlur(gray, (5, 5), 0)
+        edges = cv2.Canny(blur, 50, 150)
+    except:
+        return None     
+    return edges        

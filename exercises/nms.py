@@ -9,6 +9,7 @@
 """
 import numpy as np
 
+
 def calculate_iou(box1, box2):
     """
     计算两个边界框的交并比 (IoU)。
@@ -25,6 +26,29 @@ def calculate_iou(box1, box2):
     # (与 iou.py 中的练习相同，可以复用代码或导入)
     # 提示：计算交集面积和并集面积，然后相除。
     pass
+    box1 = np.array(box1)
+    box2 = np.array(box2)
+    
+    # Calculate the coordinates of the intersection rectangle
+    intersection_xmin = max(box1[0], box2[0])
+    intersection_ymin = max(box1[1], box2[1])
+    intersection_xmax = min(box1[2], box2[2])
+    intersection_ymax = min(box1[3], box2[3])
+    
+    # Calculate the area of the intersection rectangle
+    intersection_area = max(0, intersection_xmax - intersection_xmin) * max(0, intersection_ymax - intersection_ymin)
+    
+    # Calculate the area of both bounding boxes
+    box1_area = (box1[2] - box1[0]) * (box1[3] - box1[1])
+    box2_area = (box2[2] - box2[0]) * (box2[3] - box2[1])
+    
+    # Calculate the union area
+    union_area = box1_area + box2_area - intersection_area
+    
+    # Calculate the IoU
+    iou = intersection_area / union_area
+    
+    return iou
 
 def nms(boxes, scores, iou_threshold):
     """
@@ -53,3 +77,25 @@ def nms(boxes, scores, iou_threshold):
     #    d. 更新 order，只保留那些 IoU <= threshold 的框的索引 (order = order[inds + 1])。
     # 7. 返回 keep 列表。
     pass 
+    if len(boxes) == 0:
+        return []
+    
+    boxes = np.array(boxes)
+    scores = np.array(scores)
+
+
+    # areas = (boxes[:, 2] - boxes[:, 0]) * (boxes[:, 3] - boxes[:, 1])
+    order = np.argsort(scores)[::-1]
+    keep = []
+    while order.size > 0:
+        i = order[0]
+        keep.append(i)
+        index_list = []
+        for j in range(order.size - 1):
+            if calculate_iou(boxes[i],boxes[order[j+1]]) <= iou_threshold:
+                index_list.append(order[j+1])
+        order = order[0]+ index_list
+     
+
+
+    return keep
